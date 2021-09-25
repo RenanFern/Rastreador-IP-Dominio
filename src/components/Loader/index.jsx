@@ -1,6 +1,6 @@
-import React from 'react';
+import { Container } from './styles';
 
-export const Loader = () => {
+function Loader() {
     return (
         <Container>
             <div className="sk-circle1 sk-circle"></div>
@@ -17,4 +17,6 @@ export const Loader = () => {
             <div className="sk-circle12 sk-circle"></div>
         </Container>
     );
-};
+}
+
+export default Loader;

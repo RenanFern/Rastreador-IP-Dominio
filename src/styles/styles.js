@@ -39,9 +39,10 @@ export const Content = styled.section`
                 outline: none;
                 padding: 1rem;
                 width: 350px;
+                font-size: 1.1rem;
 
                 &::placeholder {
-                    font-size: 1rem;
+                    font-size: 1.1rem;
                     color: #969696;
                 }
             }
@@ -98,6 +99,7 @@ export const ContentSearch = styled.section`
             height: 60px;
             background-color: #cfcfcf;
             position: absolute;
+            top: 20%;
         }
     }
 `;
