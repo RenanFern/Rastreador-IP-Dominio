@@ -152,10 +152,13 @@ export const ContentSearch = styled.section`
     @media (max-width: 840px) {
         text-align: center;
         bottom: -200px;
+        display: flex;
+        width: 90vw;
         ul {
             flex-direction: column;
             align-items: center;
             padding: 0.5rem;
+            width: 100%;
         }
         li + li {
             &:before {
@@ -173,7 +176,7 @@ export const ContentSearch = styled.section`
         p {
             color: #2b2b2b;
             font-weight: 700;
-            font-size: 0.7rem;
+            font-size: 0.9rem;
         }
     }
 `;
