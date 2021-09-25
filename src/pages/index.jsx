@@ -85,7 +85,7 @@ const Home = () => {
         <Container>
             <Head>
                 <title>
-                    Rastreador de IP - Procure seu endereço de ip ou domingo
+                    Rastreador de IP - Procure seu endereço de ip ou domínio
                 </title>
             </Head>
             <Content search={search.location}>
