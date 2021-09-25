@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { Content, ContentSearch, MapContainer } from '../styles/styles';
-import { Container } from '../styles/styles';
+import {
+    Container,
+    Content,
+    ContentSearch,
+    MapContainer,
+} from '../styles/styles';
 import ArrowImg from '../../public/images/arrow.svg';
 import Loader from '../components/Loader';
+import { toast } from 'react-toastify';
+import Head from 'next/head';
 
 const Map = dynamic(() => import('../components/Map'), { ssr: false });
 
-const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 const Home = () => {
+    const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+
     const [search, setSearch] = useState({});
     const [address, setAddress] = useState('');
     const [loading, setLoading] = useState(false);
@@ -27,6 +34,12 @@ const Home = () => {
             }
         }
         getSearch();
+    }, []);
+
+    useEffect(() => {
+        toast.warn('Desative o ADBlock para funcionar normalmente', {
+            autoClose: '5000',
+        });
     }, []);
     async function handleGetAddress() {
         if (!address) return;
@@ -58,22 +71,32 @@ const Home = () => {
                     });
             }
         } catch (error) {
-            console.log('error');
+            toast.error(
+                'Ocorreu um error ao pesquisar por esse IP ou domínio! Tente novamente'
+            );
         } finally {
             setLoading(false);
         }
     }
+
+    const defaultPosition = [-20.32211, -40.340558];
+
     return (
         <Container>
-            <Content>
+            <Head>
+                <title>
+                    Rastreador de IP - Procure seu endereço de ip ou domingo
+                </title>
+            </Head>
+            <Content search={search.location}>
                 <div className="content-search">
-                    <h1>IP Address Tracker</h1>
+                    <h1>Rastreador de endereço IP</h1>
 
                     <div>
                         <input
                             value={address}
                             type="text"
-                            placeholder="Search for any IP address or domain"
+                            placeholder="Pesquise qualquer endereço IP ou domínio"
                             onChange={(e) => setAddress(e.target.value)}
                         />
                         <button disabled={!!loading} onClick={handleGetAddress}>
@@ -87,13 +110,13 @@ const Home = () => {
                         <ul>
                             <li>
                                 <div>
-                                    <h3>IP ADDRESS</h3>
+                                    <h3>ENDEREÇO ​​DE IP</h3>
                                     <p>{search.ip}</p>
                                 </div>
                             </li>
                             <li>
                                 <div>
-                                    <h3>LOCATION</h3>
+                                    <h3>LOCALIZAÇÃO</h3>
                                     <p>
                                         {`${search.location.city}, ${search.location.country}`}
                                         <br /> {`${search.location.region}`}
@@ -102,8 +125,8 @@ const Home = () => {
                             </li>
                             <li>
                                 <div>
-                                    <h3>TIMEZONE</h3>
-                                    <p>{search.location.timezone}</p>
+                                    <h3>FUSO HORÁRIO</h3>
+                                    <p>UTC {search.location.timezone}</p>
                                 </div>
                             </li>
                             <li>
@@ -117,8 +140,15 @@ const Home = () => {
                 )}
             </Content>
 
-            <MapContainer>
-                <Map />
+            <MapContainer loading={loading}>
+                <Map
+                    defaultPosition={defaultPosition}
+                    location={
+                        search.location
+                            ? [search.location.lat, search.location.lng]
+                            : defaultPosition
+                    }
+                />
             </MapContainer>
         </Container>
     );
