@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
+import { isMobile } from 'react-device-detect';
+
 import {
     Container,
     Content,
@@ -37,10 +39,25 @@ const Home = () => {
     }, []);
 
     useEffect(() => {
-        toast.warn('Desative o ADBlock para funcionar normalmente', {
+        toast.warn('Desative o ADBlock para funcionar corretamente', {
             autoClose: '5000',
         });
     }, []);
+
+    useEffect(() => {
+        function App() {
+            if (isMobile) {
+                return toast.warn(
+                    'Ligue o GPS para a localização funcionar corretamente',
+                    {
+                        autoClose: '5000',
+                    }
+                );
+            }
+        }
+        App();
+    }, []);
+
     async function handleGetAddress() {
         if (!address) return;
 
